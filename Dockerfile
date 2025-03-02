@@ -21,7 +21,7 @@ RUN cat /var/www/api/requirements.txt
 # Instalar dependencias en un entorno virtual
 RUN python3 -m venv venv
 RUN . venv/bin/activate && pip install --upgrade pip
-RUN . venv/bin/activate && pip install -r requirements.txt
+RUN . venv/bin/activate && pip install -r api/requirements.txt
 
 # Copiar el código del API
 COPY api/ .
