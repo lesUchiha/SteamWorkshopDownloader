@@ -1,0 +1,15 @@
+{
+    "services": [
+      {
+        "name": "php-frontend",
+        "buildCommand": "apt-get update && apt-get install -y php php-fpm nginx",
+        "startCommand": "php -S 0.0.0.0:8000 -t public"
+      },
+      {
+        "name": "api",
+        "buildCommand": "pip install -r api/requirements.txt",
+        "startCommand": "uvicorn api.beta.api:app --host 0.0.0.0 --port $PORT"
+      }
+    ]
+  }
+  
