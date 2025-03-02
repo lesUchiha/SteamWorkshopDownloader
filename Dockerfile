@@ -1,15 +1,32 @@
-# Usa una imagen base con PHP (puedes elegir la versión que necesites)
-FROM php:8.0-cli
+FROM ubuntu:20.04
 
-# Instala dependencias adicionales si es necesario (por ejemplo, extensiones de PHP)
-RUN docker-php-ext-install mysqli
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Copia el contenido del directorio 'public' a la carpeta donde se servirán los archivos
+# Instalar PHP, Python, Nginx y supervisord
+RUN apt-get update && apt-get install -y \
+    php-cli php-fpm php-mysqli \
+    python3 python3-pip \
+    nginx supervisor \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configurar Nginx copiando el archivo de configuración
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copiar los archivos PHP
 WORKDIR /var/www/html
 COPY public/ .
 
-# Expone el puerto que Railway proveerá en la variable de entorno $PORT
+# Copiar la API
+WORKDIR /var/www
+COPY api/ api/
+
+# Instalar dependencias de Python para la API
+RUN pip3 install -r api/requirements.txt
+
+# Copiar la configuración de supervisord
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Exponer el puerto (Railway asigna el puerto a través de la variable PORT)
 EXPOSE 8000
 
-# Inicia el servidor PHP incorporado
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "/var/www/html"]
+CMD ["/usr/bin/supervisord"]
