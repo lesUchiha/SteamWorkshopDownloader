@@ -21,7 +21,7 @@ WORKDIR /var/www
 COPY api/ api/
 
 # Instalar dependencias de Python para la API
-RUN pip3 install -r api/requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Copiar la configuración de supervisord
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
