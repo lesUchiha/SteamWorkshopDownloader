@@ -12,16 +12,16 @@ RUN apt-get update && apt-get install -y \
 # Configurar el API
 WORKDIR /var/www/api
 
-# Copiar y verificar que el archivo existe
+# Copiar requirements.txt
 COPY api/requirements.txt /var/www/api/requirements.txt
 
 # Mostrar el contenido del archivo para debug
 RUN cat /var/www/api/requirements.txt
 
-# Instalar dependencias en un entorno virtual
+# Crear un entorno virtual e instalar dependencias correctamente
 RUN python3 -m venv venv
-RUN . venv/bin/activate && pip install --upgrade pip
-RUN . venv/bin/activate && pip install -r api/requirements.txt
+RUN /var/www/api/venv/bin/pip install --upgrade pip
+RUN /var/www/api/venv/bin/pip install -r /var/www/api/requirements.txt
 
 # Copiar el código del API
 COPY api/ .
