@@ -60,7 +60,7 @@ async def prepare_download(
     # Crear un identificador compuesto: workshopId-appid
     mod_identifier = f"{workshopId}-{appid}"
     # Construir la URL de descarga interna de la API
-    download_api_url = f"http://127.0.0.1:8000/download_mod/{mod_identifier}.zip"
+    download_api_url = f"steamworkshopdownloader.up.railway.app/download_mod/{mod_identifier}.zip"
     
     # Obtener la imagen usando el scraper
     try:
