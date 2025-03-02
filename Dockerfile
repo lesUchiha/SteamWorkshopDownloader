@@ -12,13 +12,14 @@ RUN apt-get update && apt-get install -y \
 # Configurar Nginx copiando el archivo de configuración
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copiar los archivos PHP
+# Copiar los archivos PHP y establecer el directorio para el frontend
 WORKDIR /var/www/html
 COPY public/ .
 
-# Copiar la API
-WORKDIR /var/www
-COPY api/ api/
+# Establecer el directorio de trabajo para la API
+WORKDIR /var/www/api
+# Copiar la carpeta 'api' (incluyendo requirements.txt y el código)
+COPY api/ .
 
 # Instalar dependencias de Python para la API
 RUN pip3 install -r requirements.txt
@@ -26,7 +27,7 @@ RUN pip3 install -r requirements.txt
 # Copiar la configuración de supervisord
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Exponer el puerto (Railway asigna el puerto a través de la variable PORT)
+# Exponer el puerto que Railway proveerá (Railway asigna el puerto mediante $PORT)
 EXPOSE 8000
 
 CMD ["/usr/bin/supervisord"]
