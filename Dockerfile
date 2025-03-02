@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
 # Configurar el API
 WORKDIR /var/www/api
 
+# Copiar nginx.conf
+COPY nginx.conf /etc/nginx/sites-enabled/default
+
 # Copiar el archivo de dependencias
 COPY api/requirements.txt /var/www/api/requirements.txt
 
